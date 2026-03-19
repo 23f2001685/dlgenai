@@ -231,7 +231,3 @@ xgboost==3.2.0
 xlrd==2.0.1
 yarl==1.20.0
 torchcodec==0.10.0
---extra-index-url https://download.pytorch.org/whl/cu128
-torch==2.10.0
-torchaudio==2.10.0
-torchvision==0.25.0
