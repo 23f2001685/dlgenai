@@ -17,7 +17,7 @@ from scratch_model import model_crnn
 from secret_model import model_oth
 
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[0]
 
 AST_BACKBONE = "MIT/ast-finetuned-audioset-10-10-0.4593"
 MODEL_PATHS = {
