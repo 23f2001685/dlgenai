@@ -167,6 +167,22 @@ def load_cached_model(model_name: str):
                     "win_length": int(cfg.get("win_length", 400)),
                     "target_frames": int(cfg.get("target_frames", 600)),
                 }
+            elif model_name == "Secret Sauce":
+                label2id, id2label = normalize_label_maps(ckpt)
+                cfg = ckpt.get("cfg") or {}
+                model = build_oth_model(num_classes=10)
+                meta = {
+                    "inference_type": "crnn",
+                    "label2id": label2id,
+                    "id2label": id2label,
+                    "sample_rate": int(cfg.get("sample_rate", 16_000)),
+                    "clip_seconds": float(cfg.get("clip_seconds", 6.0)),
+                    "n_mels": int(cfg.get("n_mels", 128)),
+                    "n_fft": int(cfg.get("n_fft", 400)),
+                    "hop_length": int(cfg.get("hop_length", 160)),
+                    "win_length": int(cfg.get("win_length", 400)),
+                    "target_frames": int(cfg.get("target_frames", 600)),
+                }
 
             else:
                 raise ValueError(
