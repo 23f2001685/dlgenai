@@ -23,7 +23,7 @@ AST_BACKBONE = "MIT/ast-finetuned-audioset-10-10-0.4593"
 MODEL_PATHS = {
     "AST Model": ROOT_DIR / "models" / "best_ast.pt",
     "CRNN": ROOT_DIR / "models" / "model_scratch.pth",
-    "Secret Sauce": ROOT_DIR / "models" / "best_oth.pt",
+    "Secret Sauce": ROOT_DIR / "models" / "model_oth.pt",
 }
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -44,20 +44,6 @@ def normalize_label_maps(ckpt: Dict[str, Any]) -> Tuple[Dict[str, int], Dict[int
 
 def build_scratch_model(num_classes=10):
     # Initialize CRNN model with the same architecture as used during training
-    ckpt = torch.load(MODEL_PATHS["Secret Sauce"], map_location=DEVICE)
-    if isinstance(ckpt, dict):
-        state_dict = ckpt.get("model_state_dict") or ckpt.get("state_dict")
-    else:
-        state_dict = ckpt
-
-    if state_dict is None or not isinstance(state_dict, dict):
-        raise ValueError("SecretNN checkpoint does not contain a valid state_dict.")
-
-    model_crnn.load_state_dict(state_dict, strict=True)
-    return model_crnn.to(DEVICE).eval()
-
-def build_oth_model(num_classes=10):
-    # Initialize CRNN model with the same architecture as used during training
     ckpt = torch.load(MODEL_PATHS["CRNN"], map_location=DEVICE)
     if isinstance(ckpt, dict):
         state_dict = ckpt.get("model_state_dict") or ckpt.get("state_dict")
@@ -66,6 +52,20 @@ def build_oth_model(num_classes=10):
 
     if state_dict is None or not isinstance(state_dict, dict):
         raise ValueError("CRNN checkpoint does not contain a valid state_dict.")
+
+    model_crnn.load_state_dict(state_dict, strict=True)
+    return model_crnn.to(DEVICE).eval()
+
+def build_oth_model(num_classes=10):
+    # Initialize Secret Sauce model with the same architecture as used during training
+    ckpt = torch.load(MODEL_PATHS["Secret Sauce"], map_location=DEVICE)
+    if isinstance(ckpt, dict):
+        state_dict = ckpt.get("model_state_dict") or ckpt.get("state_dict")
+    else:
+        state_dict = ckpt
+
+    if state_dict is None or not isinstance(state_dict, dict):
+        raise ValueError("Secret sauce checkpoint does not contain a valid state_dict.")
 
     model_oth.load_state_dict(state_dict, strict=True)
     return model_oth.to(DEVICE).eval()
