@@ -287,8 +287,8 @@ def load_model(model_name: str):
 
 
 def main():
-    st.set_page_config(page_title="Music Genre Predictor", page_icon="🎵", layout="centered")
-    st.title("🎵 Music Genre Predictor")
+    st.set_page_config(page_title="dlgenai-2026", page_icon="🎵", layout="centered")
+    st.title("🎵 dlgenai-2026 (Music Genre Predictor)")
     st.caption("Upload a .wav music clip and predict its genre using one of your trained models.")
 
     model_type = st.selectbox("Select model", ["AST Model", "CRNN", "Secret Sauce"], index=0)
